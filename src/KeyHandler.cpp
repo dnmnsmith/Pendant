@@ -23,8 +23,6 @@ KeyHandler::KeyHandler()
     m_keyMap[0x52] = { "~", KEY_PRIORITY }; // Cycle Start/Resume
     m_keyMap[0x53] = { "!", KEY_PRIORITY }; // Feed Hold
     m_keyMap[0x54] = { { (char)0x9E, 0x00 }, KEY_PRIORITY };   // Toggle Spindle Stop
-    m_keyMap[0x50] = { "M3 S1000", KEY_NORMAL };
-    m_keyMap[0x51] = { "M4 S1000", KEY_NORMAL };
     m_keyMap[0x55] = { "M5", KEY_NORMAL };
 
     m_keyMap[0x62] = { { (char)0x97, 0x00 }, KEY_PRIORITY };    // Rapid 25%

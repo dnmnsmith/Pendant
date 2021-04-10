@@ -558,7 +558,7 @@ void setup()
       leds.setStatusLed( 0, -1, -1); } );
 
     // Set red until settings received back.
-    leds.setStatusLed( LEDs::MAX, -1, -1);
+    leds.setStatusLed( LEDs::NORMAL, -1, -1);
 
     xTaskCreatePinnedToCore(CommsLoop,    // task
                             "bluetoothTask",  // name for task
@@ -727,7 +727,7 @@ void CommsLoop(void* pvParameters)
     if (SerialBT.available()) 
     {
         lastBtMessageSeen = xTaskGetTickCount();
-        leds.setStatusLed( 0, LEDs::MAX, -1);
+        leds.setStatusLed( 0, LEDs::NORMAL, -1);
 
         char ch = SerialBT.read();
         btBuf[btpos] = ch;
@@ -761,7 +761,7 @@ void CommsLoop(void* pvParameters)
 
     }
     else if (Serial2.available()) {      // If anything comes in Serial from co-processor
-        leds.setStatusLed( -1, -1, LEDs::MAX );
+        leds.setStatusLed( -1, -1, LEDs::NORMAL );
 
         char ch = Serial2.read();
         serBuf[serPos] = ch;

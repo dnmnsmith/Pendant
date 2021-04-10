@@ -313,6 +313,17 @@ void DoOffsetProbe(int keycode, void *arg)
   }
 }
 
+void DoSpindle(int keycode, void *args)
+{
+  if (i2cinput.getToggleUp()) // Go position
+  {
+    SendIdleOnlyString(keycode, args);
+  }
+  else
+  {
+    lcdDisplay.printf("Spindle Activate\nKey UP to execute.");
+  }
+}
 // G92 sets position. G10L20P1 though?
 
 void SetupCustomKeys()
@@ -357,4 +368,8 @@ void SetupCustomKeys()
   keyHandler.setCustomKeyHandler( 0x39, DoReferenceProbe );
   keyHandler.setCustomKeyHandler( 0x19, DoOffsetProbe );
 
+  keyHandler.setCustomKeyHandler( 0x19, DoOffsetProbe );
+
+  keyHandler.setCustomKeyHandler( 0x50, DoSpindle, (void*)"M3 S1000");
+  keyHandler.setCustomKeyHandler( 0x51, DoSpindle, (void*)"M4 S1000");
 }

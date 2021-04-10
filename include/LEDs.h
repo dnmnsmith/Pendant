@@ -23,6 +23,7 @@ class LEDs : public Lockable
 
     public:
         static const int MAX=4096;
+        static const int NORMAL=1024;
 
         LEDs( TwoWire *pTwoWire, SemaphoreHandle_t& mutex );
         ~LEDs() = default;
