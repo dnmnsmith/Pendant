@@ -1,18 +1,16 @@
 # Pendant
 Pendant for GRBL running on an ESP32
 
-lib requires:
+lib requires (run these in lib dir)...
 
-https://github.com/adafruit/Adafruit-GFX-Library
+git clone https://github.com/adafruit/Adafruit-GFX-Library.git
 
-https://github.com/adafruit/Adafruit-MCP23008-library
+git clone https://github.com/adafruit/Adafruit-MCP23008-library.git
 
-https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library
+git clone https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library.git
 
-https://github.com/adafruit/Adafruit_BusIO
+git clone https://github.com/adafruit/Adafruit_BusIO.git
 
-https://github.com/adafruit/Adafruit_SSD1306
+git clone https://github.com/adafruit/Adafruit_SSD1306.git
 
-https://github.com/johnrickman/LiquidCrystal_I2C
-
-
+git clone https://github.com/johnrickman/LiquidCrystal_I2C.git
