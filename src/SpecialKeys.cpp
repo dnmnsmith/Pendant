@@ -272,23 +272,42 @@ void showPRB( int keycode, void *arg )
       
 }
 
+void showTloRefPos( int keycode, void *arg )
+{
+    float x,y,z;
+    eepromValues.getTloRefPos( x, y, z);
+    lcdDisplay.displayPos("TLO Reference Position", x, y, z);
+}
+
 void workOrigin( int keycode, void *arg )
 {
   if (i2cinput.getToggleUp()) // Go position
   {
     SerialBT.println( "G53G90G0Z0" );  // Safe Z
-    SerialBT.println( "G53G90G0X0Y0" );  // Work XY origin.
+    SerialBT.println( "G90G0X0Y0" );  // Work XY origin.
   }
-  else if (i2cinput.getToggleUp()) // Set XY
+  else if (i2cinput.getToggleDown()) // Set XY
   {
      SerialBT.println( "G10L20P1X0Y0" );  // Zero X and Y
   }
   else
   {
-    lcdDisplay.printf("Move to WPOS Origin.\nKey UP to execute.");
+    lcdDisplay.printf("Move to WPOS Origin.\nKey UP to execute.\nDOWN to set XY 0");
   }
 }
 
+void machineOrigin( int keycode, void *arg )
+{
+  if (i2cinput.getToggleUp()) // Go position
+  {
+    SerialBT.println( "G53G90G0Z0" );  // Safe Z
+    SerialBT.println( "G53G90G0X0Y0" );  // Machine XY origin.
+  }
+  else
+  {
+    lcdDisplay.printf("Move to Machine Origin.\nKey UP to execute.");
+  }
+}
 void DoReferenceProbe(int keycode, void *arg)
 {
   if (i2cinput.getToggleUp()) // Go position
@@ -326,14 +345,32 @@ void DoSpindle(int keycode, void *args)
 }
 // G92 sets position. G10L20P1 though?
 
+void WorkspaceOrigin(int keycode, void *arg)
+{
+  char axis = (char)((uintptr_t) arg);
+
+  if (i2cinput.getToggleUp()) // Go position
+  {
+    SerialBT.printf( "G90G0%c0\n",axis );  // Work axis origin. N.B. No Safe Z!
+  }
+  else if (i2cinput.getToggleDown()) // Set zero
+  {
+     SerialBT.printf( "G10L20P1%c0\n",axis );  // Zero axis
+  }
+  else
+  {
+    lcdDisplay.printf("Move to WPOS\n%c Origin.\nKey UP to execute.\nDOWN to set %c 0",axis,axis);
+  }
+}
+
 void SetupCustomKeys()
 {
   keyHandler.setCustomKeyHandler( 0x69, SetAZero );
 
   // Zero out axis GCODE commands.
-  keyHandler.setCustomKeyHandler( 0x08, SendIdleOnlyString, "G10L20P1X0" );  // X
-  keyHandler.setCustomKeyHandler( 0x67, SendIdleOnlyString, "G10L20P1Y0" );  // Y
-  keyHandler.setCustomKeyHandler( 0x66, SendIdleOnlyString, "G10L20P1Z0" );  // Z
+  keyHandler.setCustomKeyHandler( 0x08, WorkspaceOrigin, (void*)'X' );  // X
+  keyHandler.setCustomKeyHandler( 0x67, WorkspaceOrigin, (void*)'Y' );  // Y
+  keyHandler.setCustomKeyHandler( 0x66, WorkspaceOrigin, (void*)'Z' );  // Z
 
   keyHandler.setCustomKeyHandler( 0x78, SendToA, (void*)'X');
   keyHandler.setCustomKeyHandler( 0x07, SendToA, (void*)'Y');
@@ -362,12 +399,12 @@ void SetupCustomKeys()
 
   keyHandler.setCustomKeyHandler( 0x4A, showMPos );
   keyHandler.setCustomKeyHandler( 0x6A, showPRB );
+  keyHandler.setCustomKeyHandler( 0x3A, showTloRefPos );
 
-  keyHandler.setCustomKeyHandler( 0x0A, workOrigin );
-  
+  keyHandler.setCustomKeyHandler( 0x0A, machineOrigin );
+  keyHandler.setCustomKeyHandler( 0x2A, workOrigin );
+ 
   keyHandler.setCustomKeyHandler( 0x39, DoReferenceProbe );
-  keyHandler.setCustomKeyHandler( 0x19, DoOffsetProbe );
-
   keyHandler.setCustomKeyHandler( 0x19, DoOffsetProbe );
 
   keyHandler.setCustomKeyHandler( 0x50, DoSpindle, (void*)"M3 S1000");

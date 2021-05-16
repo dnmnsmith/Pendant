@@ -399,7 +399,7 @@ void notifyProbeComplete()
       case ProbeMode_t::TOOL_LEN_PROBE:
         eepromValues.getTloRefPos( xr, yr, zr );
 
-        float tlo = x - xr;
+        float tlo = z - zr;
         SerialBT.printf("G43.1 Z%.03f\n", tlo);
 
         Serial.printf("TLO calculated as %.03f\n", tlo );

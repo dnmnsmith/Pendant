@@ -86,11 +86,11 @@ void EepromValues::getProbePos( float &x, float &y, float &z)
 
 void EepromValues::setTloRefPos( float x, float y, float z)
 {
-    getPos( m_values.tloRefPos, x, y, z );
+    setPos( m_values.tloRefPos, x, y, z );
 }
 void EepromValues::getTloRefPos( float &x, float &y, float &z)
 {
-     setPos( m_values.tloRefPos, x, y, z );
+     getPos( m_values.tloRefPos, x, y, z );
 }
 
 void EepromValues::setProbeHeight( float probeHeight )
