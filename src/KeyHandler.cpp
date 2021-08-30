@@ -118,6 +118,10 @@ bool KeyHandler::parse( std::string s  )
         auto customKeyDef = m_customKeyMap[k];
         customKeyDef.keyNotifyFn( k, customKeyDef.pArg );
     }
+    else
+    {
+        Serial.printf("Unhandled key 0x%02X\n", k );
+    }
 
     return true;
 }

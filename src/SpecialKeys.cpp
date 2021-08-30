@@ -34,8 +34,13 @@ void SendToA( int keycode, void *arg)
 void GetFromA( int keycode, void *arg)
 {
   char buffer[32];
-  
-  sprintf(buffer, static_cast<const char *>(arg), grblState.A.get() );
+  int wsIndex = 1 + (int)grblState.currentWorkspace;
+
+  sprintf(
+    buffer, 
+    static_cast<const char *>(arg), 
+    wsIndex, 
+    grblState.A.get() );
 
   Serial.println(buffer);
   SerialBT.println( buffer );
@@ -355,7 +360,9 @@ void WorkspaceOrigin(int keycode, void *arg)
   }
   else if (i2cinput.getToggleDown()) // Set zero
   {
-     SerialBT.printf( "G10L20P1%c0\n",axis );  // Zero axis
+    // P1 is G54
+    int wsIndex = 1 + (int)grblState.currentWorkspace;
+     SerialBT.printf( "G10L20P%d%c0\n", wsIndex, axis );  // Zero axis
   }
   else
   {
@@ -376,9 +383,9 @@ void SetupCustomKeys()
   keyHandler.setCustomKeyHandler( 0x07, SendToA, (void*)'Y');
   keyHandler.setCustomKeyHandler( 0x06, SendToA, (void*)'Z');
 
-  keyHandler.setCustomKeyHandler( 0x68, GetFromA, "G10L20P1X%.3f"  );  // X
-  keyHandler.setCustomKeyHandler( 0x17, GetFromA, "G10L20P1Y%.3f"  );  // X
-  keyHandler.setCustomKeyHandler( 0x16, GetFromA, "G10L20P1Z%.3f"  );  // X
+  keyHandler.setCustomKeyHandler( 0x68, GetFromA, "G10L20P%dX%.3f"  );  // X
+  keyHandler.setCustomKeyHandler( 0x17, GetFromA, "G10L20P%dY%.3f"  );  // X
+  keyHandler.setCustomKeyHandler( 0x16, GetFromA, "G10L20P%dZ%.3f"  );  // X
 
   keyHandler.setCustomKeyHandler( 0x7B, SavedPosition, (void*)0 );
   keyHandler.setCustomKeyHandler( 0x4B, SavedPosition, (void*)1 ); 
